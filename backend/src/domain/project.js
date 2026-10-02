@@ -15,6 +15,14 @@ export class Project {
         this.skills = skills;
     }
     
+    changeStatus() {
+        if (this.status === "In Progress") {
+            this.status = "Completed";
+        } else {
+            this.status = "In Progress";
+        }
+    }
+
     inProgress() {
         return this.status === "In Progress";
     }
@@ -25,5 +33,9 @@ export class Project {
 
     addSkill(newSkill) {
         this.skills.push(newSkill);
+    }
+
+    removeSkill(index) {
+        this.skills.splice(index);
     }
 }
