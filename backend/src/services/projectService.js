@@ -30,6 +30,7 @@ export class ProjectService {
             throw new ProjectNotFoundError(id);
         }
         this.projectValidator.validatePayload(payload);
+        payload.status = capitalizeWords(payload.status);
         return this.projectRepository.putProject(parseInt(id), payload);
     }
 
