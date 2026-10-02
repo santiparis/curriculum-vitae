@@ -6,3 +6,5 @@ export class Skill {
         this.area = area;
     }
 }
+
+export default Skill;

@@ -21,6 +21,10 @@ export class ExperienceService {
 
     postExperience(payload) {
         this.experienceValidator.validatePayload(payload); 
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.experienceRepository.postExperience(payload);
     }
 
@@ -29,6 +33,10 @@ export class ExperienceService {
             throw new ExperienceNotFoundError(id);
         }
         this.experienceValidator.validatePayload(payload);
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.experienceRepository.putExperience(parseInt(id), payload);
     }
 

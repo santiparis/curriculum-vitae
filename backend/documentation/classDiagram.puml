@@ -1,0 +1,50 @@
+@startuml
+class Experience {
+    id
+    entity
+    position
+    description
+    startDate
+    endDate
+    skills
+    ---
+    inProgress()
+}
+
+class Education {
+    id
+    title
+    description
+    institution
+    startDate
+    endDate
+    degree
+    skills
+    ---
+    inProgress()
+}
+
+class Project {
+    id
+    title
+    description
+    link
+    status
+    skills
+    ---
+    inProgress()
+    completed()
+}
+
+class Skill {
+    id
+    title
+    description
+    area
+    ---
+}
+
+Experience --> "*" Skill
+Education --> "*" Skill
+Project --> "*" Skill
+@enduml
