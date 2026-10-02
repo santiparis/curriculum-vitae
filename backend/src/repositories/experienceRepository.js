@@ -32,7 +32,8 @@ export class ExperienceRepository {
                 payload.position,
                 payload.description,
                 payload.startDate,
-                payload.endDate
+                payload.endDate,
+                []
             ));
             this.idCounter++;
             resolve(this.idCounter - 1);
@@ -49,7 +50,8 @@ export class ExperienceRepository {
                 payload.position,
                 payload.description,
                 payload.startDate,
-                payload.endDate
+                payload.endDate,
+                []
             );
             resolve(experience);
         }, 500));

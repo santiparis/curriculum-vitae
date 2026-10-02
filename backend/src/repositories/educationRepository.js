@@ -33,7 +33,8 @@ export class EducationRepository {
                 payload.institution,
                 payload.startDate,
                 payload.endDate,
-                payload.degree.trim().toUpperCase()
+                payload.degree.trim().toUpperCase(),
+                []
             ));
             this.idCounter++;
             resolve(this.idCounter - 1);
@@ -51,7 +52,8 @@ export class EducationRepository {
                 payload.institution,
                 payload.startDate,
                 payload.endDate,
-                payload.degree.trim().toUpperCase()
+                payload.degree.trim().toUpperCase(),
+                []
             );
             resolve(education);
         }, 500));
