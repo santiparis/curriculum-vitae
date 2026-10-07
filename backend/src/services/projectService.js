@@ -1,11 +1,15 @@
 import { ProjectRepository } from "../repositories/projectRepository.js";
 import { capitalizeWords } from "../utils/stringUtils.js";
 import { ProjectValidator } from "../validators/projectValidator.js";
+import { ProjectNotFoundError } from "../errors/appErrors.js";
 
 export class ProjectService {
-    constructor() {
-        this.projectRepository = ProjectRepository.instance();
-        this.projectValidator = new ProjectValidator();        
+    constructor({
+        projectRepository = ProjectRepository.instance(),
+        projectValidator = ProjectValidator.instance()
+    } = {}) {
+        this.projectRepository = projectRepository; 
+        this.projectValidator = projectValidator; 
     }
 
     getProjects() {

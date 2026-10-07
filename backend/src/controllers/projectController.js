@@ -1,8 +1,10 @@
 import { ProjectService } from "../services/projectService.js";
 
 export class ProjectController {
-    constructor() {
-        this.projectService = ProjectService.instance();
+    constructor({
+        projectService = ProjectService.instance()
+    } = {}) {
+        this.projectService = projectService;
     }
 
     async getProjects(req, res) {
