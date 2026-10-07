@@ -3,9 +3,12 @@ import { EducationNotFoundError } from "../errors/appErrors.js";
 import { EducationValidator } from "../validators/educationValidator.js";
 
 export class EducationService {
-    constructor() {
-        this.educationRepository = new EducationRepository();
-        this.educationValidator = new EducationValidator();
+    constructor({
+        educationRepository = EducationRepository.instance(), 
+        educationValidator = EducationValidator.instance()
+    } = {}) {
+        this.educationRepository = educationRepository;
+        this.educationValidator = educationValidator;
     }
 
     getEducation() {

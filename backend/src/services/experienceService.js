@@ -3,9 +3,12 @@ import { ExperienceNotFoundError } from "../errors/appErrors.js";
 import { ExperienceValidator } from "../validators/experienceValidator.js";
 
 export class ExperienceService {
-    constructor() {
-        this.experienceRepository = ExperienceRepository.instance();
-        this.experienceValidator = new ExperienceValidator();
+    constructor({
+        experienceRepository = ExperienceRepository.instance(),
+        experienceValidator = ExperienceValidator.instance()
+    } = {}) {
+        this.experienceRepository = experienceRepository;
+        this.experienceValidator = experienceValidator; 
     }
     
     getExperience() {

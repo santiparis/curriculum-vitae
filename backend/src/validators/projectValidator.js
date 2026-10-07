@@ -11,9 +11,14 @@ export class ProjectValidator {
         }
 
         const states = ["in progress", "completed"];
+    
 
         if (!states.includes(payload.status.trim().toLowerCase())) {
-            throw new ProjectInvalidStatusError(capitalizeWords(payload.states.trim()));
+            throw new ProjectInvalidStatusError(capitalizeWords(payload.status.trim()));
         }
+    }
+
+    static instance() {
+        return new ProjectValidator();
     }
 }

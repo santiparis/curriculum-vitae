@@ -24,4 +24,8 @@ export class EducationValidator {
             throw new EducationInvalidDegreeError(payload.degree.trim().toUpperCase());
         }
     }
+
+    static instance() {
+        return new EducationValidator();
+    }
 }

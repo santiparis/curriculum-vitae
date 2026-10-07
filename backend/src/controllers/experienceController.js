@@ -1,8 +1,10 @@
 import { ExperienceService } from "../services/experienceService.js";
 
 export class ExperienceController {
-    constructor() {
-        this.experienceService = ExperienceService.instance(); 
+    constructor({
+        experienceService = ExperienceService.instance()
+    } = {}) {
+        this.experienceService = experienceService;
     }
 
     async getExperience(req, res) {

@@ -1,8 +1,10 @@
 import { EducationService } from "../services/educationService.js";
 
 export class EducationController {
-    constructor() {
-        this.educationService = EducationService.instance();
+    constructor({
+        educationService = EducationService.instance()
+    } = {}) {
+        this.educationService = educationService;
     }
 
     async getEducation(req, res) {
