@@ -3,9 +3,12 @@ import { EducationNotFoundError } from "../errors/appErrors.js";
 import { EducationValidator } from "../validators/educationValidator.js";
 
 export class EducationService {
-    constructor() {
-        this.educationRepository = new EducationRepository();
-        this.educationValidator = new EducationValidator();
+    constructor({
+        educationRepository = EducationRepository.instance(), 
+        educationValidator = EducationValidator.instance()
+    } = {}) {
+        this.educationRepository = educationRepository;
+        this.educationValidator = educationValidator;
     }
 
     getEducation() {
@@ -21,6 +24,10 @@ export class EducationService {
 
     postEducation(payload) {
         this.educationValidator.validatePayload(payload);
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.educationRepository.postEducation(payload);
     }
 
@@ -29,6 +36,10 @@ export class EducationService {
             throw new EducationNotFoundError(id);
         }
         this.educationValidator.validatePayload(payload);
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.educationRepository.putEducation(parseInt(id), payload);
     }
 

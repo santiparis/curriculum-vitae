@@ -31,7 +31,8 @@ export class ProjectRepository {
                 payload.title,
                 payload.description,
                 payload.link,
-                payload.status
+                payload.status,
+                []
             ));
             this.idCounter++;
             resolve(this.idCounter - 1);
@@ -47,7 +48,8 @@ export class ProjectRepository {
                 payload.title,
                 payload.description,
                 payload.link,
-                payload.status
+                payload.status,
+                []
             );
             resolve(project);
         }, 500));

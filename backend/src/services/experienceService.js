@@ -3,9 +3,12 @@ import { ExperienceNotFoundError } from "../errors/appErrors.js";
 import { ExperienceValidator } from "../validators/experienceValidator.js";
 
 export class ExperienceService {
-    constructor() {
-        this.experienceRepository = ExperienceRepository.instance();
-        this.experienceValidator = new ExperienceValidator();
+    constructor({
+        experienceRepository = ExperienceRepository.instance(),
+        experienceValidator = ExperienceValidator.instance()
+    } = {}) {
+        this.experienceRepository = experienceRepository;
+        this.experienceValidator = experienceValidator; 
     }
     
     getExperience() {
@@ -21,6 +24,10 @@ export class ExperienceService {
 
     postExperience(payload) {
         this.experienceValidator.validatePayload(payload); 
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.experienceRepository.postExperience(payload);
     }
 
@@ -29,6 +36,10 @@ export class ExperienceService {
             throw new ExperienceNotFoundError(id);
         }
         this.experienceValidator.validatePayload(payload);
+        payload.startDate = new Date(payload.startDate);
+        if (payload.endDate) {
+            payload.endDate = new Date(payload.endDate);
+        }
         return this.experienceRepository.putExperience(parseInt(id), payload);
     }
 

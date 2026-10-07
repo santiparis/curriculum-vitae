@@ -59,3 +59,9 @@ export class ProjectNotFoundError extends AppError {
         super(404, `Project with ID ${id} not found.`);
     }
 }
+
+export class InvalidDateError extends AppError {
+    constructor(date) {
+        super(400, `Invalid date format or value: ${date}`);
+    }
+}
