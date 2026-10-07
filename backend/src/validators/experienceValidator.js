@@ -18,4 +18,8 @@ export class ExperienceValidator {
             throw new ExperienceMissingFieldError(missing);
         }
     }
+
+    static instance() {
+        return new ExperienceValidator();
+    }
 }
