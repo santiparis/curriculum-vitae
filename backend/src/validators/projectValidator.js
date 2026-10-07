@@ -1,5 +1,5 @@
 import { capitalizeWords } from "../utils/stringUtils.js";
-import { ProjectMissingFieldsError, ProjectInvalidStatusError } from "../errors/appErrors.js";
+import { ProjectMissingFieldsError, ProjectInvalidStatusError, InvalidDateError } from "../errors/appErrors.js";
 
 export class ProjectValidator {
     validatePayload(payload) {
