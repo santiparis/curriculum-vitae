@@ -1,71 +1,54 @@
-import Education from "../domain/education.js";
+import EducationModel from "../persistence/models/educationModel.js";
 
 export class EducationRepository {
-    constructor() {
-        this.idCounter = 0;
-        this.education = [];
-    }
-
     getEducation() {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.education);
-        }, 500));
+        return EducationModel.find({});
     }
 
     getEducationByID(id) {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.education.find(education => education.id === id));
-        }, 500));
+        return EducationModel.findOne({ id: id });
     }
 
-    educationExists(id) {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.education.some(education => education.id === id));
-        }, 500));
+    async educationExists(id) {
+        return (await EducationModel.exists({ id: id })) !== null;
     }
 
-    postEducation(payload) {
-        return new Promise(resolve => setTimeout(() => {
-            this.education.push(new Education(
-                this.idCounter,
-                payload.title,
-                payload.description,
-                payload.institution,
-                payload.startDate,
-                payload.endDate,
-                payload.degree.trim().toUpperCase(),
-                []
-            ));
-            this.idCounter++;
-            resolve(this.idCounter - 1);
-        }, 500));
+    async postEducation(payload) {
+        const newID = await this.nextEducationID();
+        await EducationModel.create({
+            id: newID,
+            title: payload.title,
+            description: payload.description,
+            institution: payload.institution,
+            startDate: payload.institution,
+            endDate: payload.endDate,
+            degree: payload.degree.trim().toUpperCase(),
+            skills: payload.skills
+        });
+        return newID;
     }
 
-    putEducation(id, payload) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.education.findIndex(education => education.id === id);
-            const education = this.education[index];
-            this.education[index] = new Education(
-                education.id,
-                payload.title,
-                payload.description,
-                payload.institution,
-                payload.startDate,
-                payload.endDate,
-                payload.degree.trim().toUpperCase(),
-                []
-            );
-            resolve(education);
-        }, 500));
+    async putEducation(id, payload) {
+        return EducationModel.findOneAndReplace(
+            { id: id },
+            {
+                id: id,
+                title: payload.title,
+                description: payload.description,
+                institution: payload.institution,
+                startDate: payload.startDate,
+                endDate: payload.endDate,
+                degree: payload.degree.trim().toUpperCase(),
+                skills: payload.skills
+            });
     }
 
-    deleteEducation(id) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.education.findIndex(education => education.id === id);
-            const education = this.education[index];
-            this.education.splice(index);
-            resolve(education);
-        }, 500));
+    async deleteEducation(id) {
+        return EducationModel.findOneAndDelete({ id: id });
+    }
+
+    async nextEducationID() {
+        return await EducationModel.countDocuments();
     }
 
     static instance() {
