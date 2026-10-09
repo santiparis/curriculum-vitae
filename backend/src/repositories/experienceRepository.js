@@ -1,70 +1,50 @@
-import { Experience } from "../domain/experience.js";
+import ExperienceModel from "../persistence/models/experienceModel.js";
 
 export class ExperienceRepository {
-    constructor() {
-        this.experiences = [];
-        this.idCounter = 0;
-    }
-
     getExperience() {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.experiences);
-        }, 500));
+        return ExperienceModel.find({});
     }
 
     getExperienceByID(id) {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.experiences.find(experience => experience.id === id));
-        }, 500));
+        return ExperienceModel.findOne({ id: id });
     }
 
-    experienceExists(id) {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.experiences.some(experience => experience.id === id));
-        }, 500));
+    async experienceExists(id) {
+        return (await ExperienceModel.exists({ id: id })) !== null;
     }
 
-    postExperience(payload) {
-        return new Promise(resolve => setTimeout(() => {
-            this.experiences.push(new Experience(
-                this.idCounter,
-                payload.entity,
-                payload.position,
-                payload.description,
-                payload.startDate,
-                payload.endDate,
-                []
-            ));
-            this.idCounter++;
-            resolve(this.idCounter - 1);
-        }, 500));
+    async postExperience(payload) {
+        const newID = await this.nextExperienceID();
+        await ExperienceModel.create({
+            id: newID,
+            entity: payload.entity,
+            position: payload.position,
+            description: payload.description,
+            startDate: payload.startDate,
+            endDate: payload.endDate,
+            skills: payload.skills
+        });
+        return newID;
     }
 
-    putExperience(id, payload) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.experiences.findIndex(experience => experience.id === id);
-            const experience = this.experiences[index];
-            this.experiences[index] = new Experience(
-                experience.id,
-                payload.entity,
-                payload.position,
-                payload.description,
-                payload.startDate,
-                payload.endDate,
-                []
-            );
-            resolve(experience);
-        }, 500));
-
+    async putExperience(id, payload) {
+        return ExperienceModel.findOneAndReplace({ id: id }, {
+            id: id,
+            entity: payload.entity,
+            position: payload.position,
+            description: payload.description,
+            startDate: payload.startDate,
+            endDate: payload.endDate,
+            skills: payload.skills
+        });
     }
 
-    deleteExperience(id) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.experiences.findIndex(experience => experience.id === id);
-            const experience = this.experiences[index];
-            this.experiences.splice(index);
-            resolve(experience);
-        }, 500));
+    async deleteExperience(id) {
+        return ExperienceModel.findOneAndDelete({ id: id });
+    }
+
+    async nextExperienceID() {
+        return await ExperienceModel.countDocuments();
     }
 
     static instance() {

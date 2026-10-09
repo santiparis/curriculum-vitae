@@ -1,67 +1,48 @@
-import { Project } from "../domain/project.js";
+import ProjectModel from "../persistence/models/projectModel.js";
 
 export class ProjectRepository {
-    constructor() {
-        this.projects = [];
-        this.idCounter = 0;
-    }
-
     getProjects() {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.projects);
-        }, 500));
+        return ProjectModel.find({});
     }
 
     getProjectByID(id) {
-        return new Promise(resolve => setTimeout(() => {
-            resolve(this.projects.find(project => project.id === id));
-        }, 500));
+        return ProjectModel.findOne({ id: id });
     }
 
-    projectExists(id) {
-       return new Promise(resolve => setTimeout(() => {
-           resolve(this.projects.some(project => project.id === id));
-       }, 500));
+    async projectExists(id) {
+        return (await ProjectModel.exists({ id: id })) !== null;
     }
 
-    postProject(payload) {
-        return new Promise(resolve => setTimeout(() => {
-            this.projects.push(new Project(
-                this.idCounter,
-                payload.title,
-                payload.description,
-                payload.link,
-                payload.status,
-                []
-            ));
-            this.idCounter++;
-            resolve(this.idCounter - 1);
-        }, 500));
+    async postProject(payload) {
+        const newID = await this.nextProjectID();
+        await ProjectModel.create({
+            id: newID,
+            title: payload.title,
+            description: payload.description,
+            link: payload.link,
+            status: payload.status,
+            skills: payload.skills
+        });
+        return newID;
     }
 
-    putProject(id, payload) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.projects.findIndex(project => project.id === id);
-            const project = this.projects[index];
-            this.projects[index] = new Project(
-                project.id,
-                payload.title,
-                payload.description,
-                payload.link,
-                payload.status,
-                []
-            );
-            resolve(project);
-        }, 500));
+    async putProject(id, payload) {
+        return ProjectModel.findOneAndReplace({ id: id }, {
+            id: id,
+            title: payload.title,
+            description: payload.description,
+            link: payload.link,
+            status: payload.status,
+            skills: payload.skills
+        });
     }
 
-    deleteProject(id) {
-        return new Promise(resolve => setTimeout(() => {
-            const index = this.projects.findIndex(project => project.id === id);
-            const project = this.projects[index];
-            this.projects.splice(index);
-            resolve(project);
-        }, 500));
+    async deleteProject(id) {
+        return ProjectModel.findOneAndDelete({ id: id });
+    }
+
+    async nextProjectID() {
+        return await ProjectModel.countDocuments();
     }
 
     static instance() {
