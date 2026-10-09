@@ -9,6 +9,8 @@ class Experience {
     skills
     ---
     inProgress()
+    addSkill(newSkill)
+    removeSkill(index)
 }
 
 class Education {
@@ -22,6 +24,8 @@ class Education {
     skills
     ---
     inProgress()
+    addSkill(newSkill)
+    removeSkill(index)
 }
 
 class Project {
@@ -35,17 +39,18 @@ class Project {
     changeStatus()
     inProgress()
     completed()
+    addSkill(newSkill)
+    removeSkill(index)
 }
 
 class Skill {
-    id
     title
     description
     area
     ---
 }
 
-Experience --> "*" Skill
-Education --> "*" Skill
-Project --> "*" Skill
+Experience "1" *-- "*" Skill : skills
+Education "1" *-- "*" Skill : skills
+Project "1" *-- "*" Skill : skills
 @enduml
